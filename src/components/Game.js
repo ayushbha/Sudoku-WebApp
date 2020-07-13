@@ -43,6 +43,7 @@ const Game = (props) => {
 					}
 				}
 			}
+			ErrorBoard(error,solution)
 			if(sol_flag==0){
 				alert("Correct Solution")
 			}
@@ -50,6 +51,37 @@ const Game = (props) => {
 				alert("Wrong Solution. Try Again.")
 			}
 		}
+	}
+
+	function ErrorBoard(error,solution){
+		var it = []
+		var c = []
+		var flag = 0
+		for (var i = 0; i < 9; i++) {
+			var cell = []
+			for (var j = 0; j < 9; j++) {
+				if(items[i].props.children[j].props.children.props.disabled == true){
+					cell.push(<td key={i.toString() + j.toString()}><input type='text' maxLength='1' size='1' value={solution[i][j]} onChange={Check} disabled/></td>)
+				}
+				else{
+					flag=0
+					for(var l=0;l<error.length;l++){
+						if(error[l][0]==i && error[l][1]==j){
+							flag=1
+							cell.push(<td key={i.toString() + j.toString()}><input type='text' maxLength='1' size='1' defaultValue={solution[i][j]} onChange={Check} style={{background:"red"}}/></td>)
+						}
+					}
+					if(flag==0){
+						cell.push(<td key={i.toString() + j.toString()}><input type='text' maxLength='1' size='1' defaultValue={solution[i][j]} onChange={Check} style={{background:"green"}}/></td>)
+					}
+				}
+			}
+			c.push(cell)
+		}
+		for(var k=0;k<9;k++){
+			it.push(<tr key={k}>{c[k]}</tr>)
+		}
+		setItem(it)
 	}
 
 	function CreateBoard() {
@@ -121,6 +153,7 @@ const Game = (props) => {
 			e.target.focus()
 			alert("Only Numbers[1-9] are Allowed")
 		}
+		e.target.setAttribute("style","background:white")
 	}
 
 	if(items.length===0){
@@ -135,28 +168,28 @@ const Game = (props) => {
 		for (var i = 0; i < 9; i++) {
 			var row = []
 			for(var j=0; j < 9; j++){
-				if(count<30 && Math.random()>0.65 && visited[i][j]===0){
-					row.push(<td><input type='text' maxlength='1' size='1' value={gameboard[i][j]} onChange={Check} disabled/></td>)
+				if(count<79 && Math.random()>0.65 && visited[i][j]===0){
+					row.push(<td key={i.toString()+j.toString()}><input type='text' maxLength='1' size='1' value={gameboard[i][j]} onChange={Check} disabled/></td>)
 					count = count + 1
 					visited[i][j]=1
 				}
 				else{
-					row.push(<td><input type='text' maxlength='1' size='1' onChange={Check}/></td>)
+					row.push(<td key={i.toString()+j.toString()}><input type='text' maxLength='1' size='1' onChange={Check}/></td>)
 				}
 			}
 			cells.push(row)
 		}
-		while(count<30){
+		while(count<79){
 			let x = Math.floor(Math.random() * 9)
 			let y = Math.floor(Math.random() * 9)
 			if(visited[x][y]===0){
 				visited[x][y]=1
-				cells[x][y] = <td><input type='text' maxlength='1' size='1' value={gameboard[x][y]} onChange={Check} disabled/></td>
+				cells[x][y] = <td key={x.toString()+y.toString()}><input type='text' maxLength='1' size='1' value={gameboard[x][y]} onChange={Check} disabled/></td>
 				count+=1
 			}
 		}
 		for(var l=0;l<9;l++){
-			items.push(<tr>{cells[l]}</tr>)
+			items.push(<tr key={l}>{cells[l]}</tr>)
 		}
 		setItem(items)
 	}
