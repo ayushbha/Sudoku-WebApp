@@ -168,7 +168,7 @@ const Game = (props) => {
 		for (var i = 0; i < 9; i++) {
 			var row = []
 			for(var j=0; j < 9; j++){
-				if(count<79 && Math.random()>0.65 && visited[i][j]===0){
+				if(count<30 && Math.random()>0.65 && visited[i][j]===0){
 					row.push(<td key={i.toString()+j.toString()}><input type='text' maxLength='1' size='1' value={gameboard[i][j]} onChange={Check} disabled/></td>)
 					count = count + 1
 					visited[i][j]=1
@@ -179,7 +179,7 @@ const Game = (props) => {
 			}
 			cells.push(row)
 		}
-		while(count<79){
+		while(count<30){
 			let x = Math.floor(Math.random() * 9)
 			let y = Math.floor(Math.random() * 9)
 			if(visited[x][y]===0){
