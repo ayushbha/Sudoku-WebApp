@@ -199,19 +199,17 @@ const Game = (props) => {
 			<div>
 				<h1>Play Sudoku</h1>
 			</div>
-			<div style={{margin:'7% auto',width:"70%",display:"flex"}}>
-				<div style={{width:"70%"}}>
+			<div style={{marginTop:'5%',width:"100%",textAlign:"-webkit-center"}}>
 				<table id="gametable">
 					<tbody>
 						{item}
 					</tbody>
 				</table>
-				</div>
-				<div style={{width:"30%",marginTop:"10%"}}>
-					<div style={{float:"left"}}>
+				<div style={{width:"30%",marginTop:"5%",display:"flex",margin:"5% auto", marginLeft:"45%"}}>
+					<div>
 						<button className="button" style={{height:'fit-content',padding:"5%"}} onClick={NewGame}>New Game</button>
 					</div>
-					<div style={{float:"left"}}>
+					<div>
 						<button className="button" style={{height:'fit-content',marginLeft:"5%",padding:"5%"}} onClick={CheckGame}>Check Solution</button>
 					</div>
 				</div>
