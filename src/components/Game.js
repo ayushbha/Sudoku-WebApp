@@ -8,7 +8,7 @@ const Game = (props) => {
 	const [item,setItem] = React.useState([])
 
 	const NewGame = () => {
-		window.location.reload(false);
+		window.location.reload()
 	}
 
 	const CheckGame = () => {
@@ -34,20 +34,20 @@ const Game = (props) => {
 			solution.push(k)
 		}
 		if(flag==0){
+			var error = []
 			for(var m=0;m<9;m++){
 				for(var l=0;l<9;l++){
 					if(solution[m][l]!=gameboard[m][l]){
-						alert("Wrong Solution. Try Again.")
 						sol_flag = 1
-						break
+						error.push([m,l])
 					}
-				}
-				if(sol_flag==1){
-					break
 				}
 			}
 			if(sol_flag==0){
 				alert("Correct Solution")
+			}
+			else{
+				alert("Wrong Solution. Try Again.")
 			}
 		}
 	}
@@ -135,7 +135,7 @@ const Game = (props) => {
 		for (var i = 0; i < 9; i++) {
 			var row = []
 			for(var j=0; j < 9; j++){
-				if(count<25 && Math.random()>0.65 && visited[i][j]===0){
+				if(count<30 && Math.random()>0.65 && visited[i][j]===0){
 					row.push(<td><input type='text' maxlength='1' size='1' value={gameboard[i][j]} onChange={Check} disabled/></td>)
 					count = count + 1
 					visited[i][j]=1
@@ -146,7 +146,7 @@ const Game = (props) => {
 			}
 			cells.push(row)
 		}
-		while(count<25){
+		while(count<30){
 			let x = Math.floor(Math.random() * 9)
 			let y = Math.floor(Math.random() * 9)
 			if(visited[x][y]===0){
