@@ -8,6 +8,7 @@ var render = 0
 const Game = (props) => {
 	const [gameboard,setBoard] = React.useState(CreateBoard())
 	const [item,setItem] = React.useState([])
+	console.log(gameboard)
 
 	const NewGame = () => {
 		window.location.reload()
@@ -43,24 +44,50 @@ const Game = (props) => {
 			solution.push(k)
 		}
 		if(flag==0){
-			var error = []
-			for(var m=0;m<9;m++){
-				for(var l=0;l<9;l++){
-					if(solution[m][l]!=gameboard[m][l]){
-						sol_flag = 1
-						error.push([m,l])
-					}
-				}
-			}
-			ErrorBoard(error,solution)
-			if(sol_flag==0){
+			if(CheckSolution(solution)){
 				alert("Correct Solution")
 				props.history.push("/")
 			}
 			else{
-				alert("Wrong Solution. Try Again.")
+				var error = []
+				for(var m=0;m<9;m++){
+					for(var l=0;l<9;l++){
+						if(solution[m][l]!=gameboard[m][l]){
+							sol_flag = 1
+							error.push([m,l])
+						}
+					}
+				}
+				ErrorBoard(error,solution)
+				if(sol_flag==0){
+					alert("Correct Solution")
+					props.history.push("/")
+				}
+				else{
+					alert("Wrong Solution. Try Again.")
+				}
 			}
 		}
+	}
+
+	function CheckSolution (board){
+		const s=new Set();
+	    for(let i=0; i<9; i++) {
+	        for(let j=0;j<9;j++) {
+	            let row="row"+i+board[i][j];
+	            let col="col"+j+board[i][j];
+	            let box="box"+Math.floor(i/3)+"-"+Math.floor(j/3)+board[i][j];
+
+	            if(s.has(row)) return false;
+	            if(s.has(col)) return false;
+	            if(s.has(box)) return false;
+	         
+	            s.add(row);
+	            s.add(col);
+	            s.add(box);
+	        }
+	    } 
+		return true
 	}
 
 	function ErrorBoard(error,solution){
@@ -230,7 +257,7 @@ const Game = (props) => {
 						{item}
 					</tbody>
 				</table>
-				<div style={{width:"30%",marginTop:"5%",display:"flex",margin:"5% auto", marginLeft:"43%"}}>
+				<div style={{width:"35%",marginTop:"5%",display:"flex",margin:"5% auto", marginLeft:"43%"}}>
 					<div>
 						<button className="button" style={{height:'100%',padding:"5%"}} onClick={NewGame}>New Game</button>
 					</div>
@@ -238,7 +265,7 @@ const Game = (props) => {
 						<button className="button" style={{height:'100%',marginLeft:"5%",padding:"5%"}} onClick={CheckGame}>Check Solution</button>
 					</div>
 					<div>
-						<button className="button" style={{height:'100%',marginLeft:"5%",padding:"5%"}} onClick={()=>props.history.goBack()}>Go Back</button>
+						<button className="button" style={{height:'100%',marginLeft:"10%",padding:"5%"}} onClick={()=>props.history.goBack()}>Go Back</button>
 					</div>
 				</div>
 			</div>
