@@ -3,12 +3,21 @@ import React from 'react';
 var items = []
 var cells = []
 var visited = []
+var mode = ""
+var render = 0
 const Game = (props) => {
 	const [gameboard,setBoard] = React.useState(CreateBoard())
 	const [item,setItem] = React.useState([])
 
 	const NewGame = () => {
 		window.location.reload()
+	}
+
+	if(mode!=props.location.mode){
+		render=0
+		items.length=0
+		cells.length=0
+		visited.length=0
 	}
 
 	const CheckGame = () => {
@@ -46,6 +55,7 @@ const Game = (props) => {
 			ErrorBoard(error,solution)
 			if(sol_flag==0){
 				alert("Correct Solution")
+				props.history.push("/")
 			}
 			else{
 				alert("Wrong Solution. Try Again.")
@@ -156,8 +166,9 @@ const Game = (props) => {
 		e.target.setAttribute("style","background:white")
 	}
 
-	if(items.length===0){
+	if(items.length===0 || render===0){
 		var count = 0
+		var fixed = 0
 		for (var k = 0; k < 9; k++) {
 			var v = []
 			for (var m = 0; m < 9; m++) {
@@ -165,10 +176,23 @@ const Game = (props) => {
 			}
 			visited.push(v)
 		}
+		mode = props.location.mode
+		if(props.location.mode==="Hard"){
+			fixed = 29
+		}
+		else if(props.location.mode==="Medium"){
+			fixed = 34
+		}
+		else if(props.location.mode==="Easy" || props.location.mode===undefined){
+			fixed = 39
+		}
+		else if(props.location.mode==="Very Easy"){
+			fixed = 45
+		}
 		for (var i = 0; i < 9; i++) {
 			var row = []
 			for(var j=0; j < 9; j++){
-				if(count<30 && Math.random()>0.65 && visited[i][j]===0){
+				if(count<fixed && Math.random()>0.65 && visited[i][j]===0){
 					row.push(<td key={i.toString()+j.toString()}><input type='text' maxLength='1' size='1' value={gameboard[i][j]} onChange={Check} disabled/></td>)
 					count = count + 1
 					visited[i][j]=1
@@ -179,7 +203,7 @@ const Game = (props) => {
 			}
 			cells.push(row)
 		}
-		while(count<30){
+		while(count<fixed){
 			let x = Math.floor(Math.random() * 9)
 			let y = Math.floor(Math.random() * 9)
 			if(visited[x][y]===0){
@@ -192,6 +216,7 @@ const Game = (props) => {
 			items.push(<tr key={l}>{cells[l]}</tr>)
 		}
 		setItem(items)
+		render+=1
 	}
 
 	return(
@@ -205,12 +230,15 @@ const Game = (props) => {
 						{item}
 					</tbody>
 				</table>
-				<div style={{width:"30%",marginTop:"5%",display:"flex",margin:"5% auto", marginLeft:"45%"}}>
+				<div style={{width:"30%",marginTop:"5%",display:"flex",margin:"5% auto", marginLeft:"43%"}}>
 					<div>
-						<button className="button" style={{height:'fit-content',padding:"5%"}} onClick={NewGame}>New Game</button>
+						<button className="button" style={{height:'100%',padding:"5%"}} onClick={NewGame}>New Game</button>
 					</div>
 					<div>
-						<button className="button" style={{height:'fit-content',marginLeft:"5%",padding:"5%"}} onClick={CheckGame}>Check Solution</button>
+						<button className="button" style={{height:'100%',marginLeft:"5%",padding:"5%"}} onClick={CheckGame}>Check Solution</button>
+					</div>
+					<div>
+						<button className="button" style={{height:'100%',marginLeft:"5%",padding:"5%"}} onClick={()=>props.history.goBack()}>Go Back</button>
 					</div>
 				</div>
 			</div>

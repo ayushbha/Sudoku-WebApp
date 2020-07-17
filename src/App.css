@@ -86,3 +86,7 @@ button:hover{
   background-color: #0066ff;
   cursor: pointer;
 }
+
+button {
+  margin-left: 1%;
+}
